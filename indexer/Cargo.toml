@@ -18,7 +18,7 @@ git = "https://github.com/hyperware-ai/hyperprocess-macro"
 
 [dependencies.hyperware_process_lib]
 features = ["logging"]
-version = "1.0.2"
+version = "1.0.4"
 
 [dependencies.serde]
 features = ["derive"]
