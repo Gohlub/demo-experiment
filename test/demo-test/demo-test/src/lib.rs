@@ -23,41 +23,46 @@ wit_bindgen::generate!({
     additional_derives: [PartialEq, serde::Deserialize, serde::Serialize, process_macros::SerdeJsonInto],
 });
 
-call_init!(init);
-fn init(_our: Address) -> anyhow::Result<()> {
-    // Even if we uncomment this it doesn't work
-    // fail!("Well maybe this doesn't even work");
-    print_to_terminal(0, "begin");
+fn handle_message(our: &Address) -> anyhow::Result<()> {
+    let message = await_message() else {
+        fail!("Test failed due to error");
+    };
 
-    loop {
-        match handle_message() {
-            Ok(()) => {}
-            Err(e) => {
-                fail!("dial_test");
-            }
-        };
-    }
-    Ok(())
-}
-
-fn handle_message() -> anyhow::Result<()> {
-    let message = await_message().unwrap();
     if !message.is_request() {
-        return Err(anyhow::anyhow!("not a request"));
+        unimplemented!();
     }
-
     let source = message.source();
-    if our().node != source.node {
+    if our.node != source.node {
         return Err(anyhow::anyhow!(
             "rejecting foreign Message from {:?}",
             source,
         ));
     }
-
     let TesterRequest::Run(RunRequest {
         input_node_names: node_names,
         ..
     }) = message.body().try_into()?;
+    print_to_terminal(0, "chat_test: a");
+    assert!(node_names.len() >= 2);
+    if our.node != node_names[0] {
+        // we are not master node: return
+        Response::new()
+            .body(TesterResponse::Run(Ok(())))
+            .send()
+            .unwrap();
+        return Ok(());
+    }
+
+    // we are master node
+
+    let our_chat_address = Address {
+        node: our.node.clone(),
+        process: ProcessId::new(Some("indexer"), "app-framework-demo", "uncentered.os"),
+    };
+    let their_chat_address = Address {
+        node: node_names[1].clone(),
+        process: ProcessId::new(Some("client0"), "app-framework-demo", "uncentered.os"),
+    };
 
     Response::new()
         .body(TesterResponse::Run(Ok(())))
@@ -65,4 +70,20 @@ fn handle_message() -> anyhow::Result<()> {
         .unwrap();
 
     Ok(())
+}
+
+call_init!(init);
+fn init(our: Address) {
+    print_to_terminal(0, "begin");
+
+    loop {
+        match handle_message(&our) {
+            Ok(()) => {},
+            Err(e) => {
+                print_to_terminal(0, format!("chat_test: error: {e:?}").as_str());
+
+                fail!("chat_test");
+            },
+        };
+    }
 }

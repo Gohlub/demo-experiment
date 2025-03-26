@@ -5,7 +5,7 @@
     "properties": {
         "package_name": "demo-test",
         "current_version": "0.1.0",
-        "publisher": "hyperware.ai",
+        "publisher": "uncentered.os",
         "mirrors": [],
         "code_hashes": {
             "0.1.0": ""
@@ -19,3 +19,4 @@
     "external_url": "",
     "animation_url": ""
 }
+

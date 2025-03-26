@@ -2,18 +2,12 @@
     {
         "process_name": "demo-test",
         "process_wasm_path": "/demo-test.wasm",
-        "on_exit": "Restart",
-        "request_networking": false,
+        "on_exit": "None",
+        "request_networking": true,
         "request_capabilities": [
-            "curator:app-framework-demo:uncentered.os",
-            "indexer:app-framework-demo:uncentered.os",
-            "client:app-framework-demo:uncentered.os",
             "http_client:distro:sys"
         ],
         "grant_capabilities": [
-            "curator:app-framework-demo:uncentered.os",
-            "indexer:app-framework-demo:uncentered.os",
-            "client:app-framework-demo:uncentered.os",
             "http_client:distro:sys"
         ],
         "public": true

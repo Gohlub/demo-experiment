@@ -9,6 +9,6 @@ members = [
     "curator",
     "indexer",
     "caller-utils",
-    "test/demo-test/demo-test"
+    # "test/demo-test/demo-test"
 ]
 resolver = "2"
