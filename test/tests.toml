@@ -20,8 +20,8 @@ runtime_verbosity = 2
 
 [[tests.nodes]]
 port = 8081
-home = "home/client0"
-fake_node_name = "client0.os"
+home = "home/client"
+fake_node_name = "client.os"
 runtime_verbosity = 2
 
 
