@@ -1,0 +1,14 @@
+[profile.release]
+lto = true
+opt-level = "s"
+panic = "abort"
+
+[workspace]
+members = [
+    "client",
+    "curator",
+    "indexer",
+    "caller-utils",
+    "test/demo-test/demo-test"
+]
+resolver = "2"
