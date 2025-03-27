@@ -1,4 +1,4 @@
-interface client {
+interface curator {
     // This interface contains function signature definitions that will be used
     // by the hyper-bindgen macro to generate async function bindings.
     //
@@ -9,15 +9,9 @@ interface client {
 
     use standard.{address};
 
-    // Function signature for: leet (remote)
-    record leet-signature-remote {
+    // Function signature for: temp (remote)
+    record temp-signature-remote {
         target: address,
-        returning: u32
-    }
-
-    // Function signature for: leet (local)
-    record leet-signature-local {
-        target: address,
-        returning: u32
+        returning: f32
     }
 }

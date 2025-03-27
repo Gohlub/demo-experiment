@@ -16,6 +16,7 @@ thiserror = "1.0"
 url = "2.5.3"
 rand = "0.8"
 wit-bindgen = "0.36.0"
+caller-utils = { path = "../../../caller-utils" }
 
 [lib]
 crate-type = ["cdylib"]

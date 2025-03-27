@@ -9,9 +9,15 @@ interface client {
 
     use standard.{address};
 
-    // Function signature for: temp (remote)
-    record temp-signature-remote {
+    // Function signature for: leet (remote)
+    record leet-signature-remote {
         target: address,
-        returning: f32
+        returning: u32
+    }
+
+    // Function signature for: leet (local)
+    record leet-signature-local {
+        target: address,
+        returning: u32
     }
 }

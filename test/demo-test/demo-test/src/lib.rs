@@ -8,13 +8,14 @@ use hyperware_process_lib::{
 };
 
 use hyperware_process_lib::vfs::{create_drive, create_file, File};
+use caller_utils::*;
 
 mod tester_lib;
 use tester_lib::*;
 
 wit_bindgen::generate!({
     path: "target/wit",
-    world: "tester-app-framework-demo-uncentered-dot-os-v0",
+    world: "test-app-framework-demo-uncentered-dot-os-v0",
     generate_unused_types: true,
     additional_derives: [PartialEq, serde::Deserialize, serde::Serialize, process_macros::SerdeJsonInto],
 });

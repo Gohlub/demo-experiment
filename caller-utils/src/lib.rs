@@ -1,5 +1,6 @@
 use serde::{Deserialize, Serialize};
 use process_macros::SerdeJsonInto;
+use std::collections::HashMap;
 
 wit_bindgen::generate!({
     path: "target/wit",
@@ -19,10 +20,16 @@ use serde_json::json;
 pub mod client {
     use crate::*;
 
-    /// Generated stub for `temp` remote RPC call
-    pub async fn temp_remote_rpc(target: &Address) -> SendResult<f32> {
-        let request = json!({"Temp" : {}});
-        send::<f32>(&request, target, 30).await
+    /// Generated stub for `leet` remote RPC call
+    pub async fn leet_remote_rpc(target: &Address) -> SendResult<u32> {
+        let request = json!({"Leet" : {}});
+        send::<u32>(&request, target, 30).await
+    }
+    
+    /// Generated stub for `leet` local RPC call
+    pub async fn leet_local_rpc(target: &Address) -> SendResult<u32> {
+        let request = json!({"Leet" : {}});
+        send::<u32>(&request, target, 30).await
     }
     
     

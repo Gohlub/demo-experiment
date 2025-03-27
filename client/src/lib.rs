@@ -33,7 +33,8 @@ impl ClientState {
     async fn initialize(&mut self) {}
 
     #[remote]
-    async fn temp(&self) -> f32 {
-        1.0
+    #[local]
+    async fn leet(&self) -> u32 {
+        1337
     }
 }
