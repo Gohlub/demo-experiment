@@ -23,6 +23,8 @@ wit_bindgen::generate!({
 fn handle_message (our: &Address) -> anyhow::Result<()> {
     let message = await_message().unwrap();
 
+    // let result = caller_utils::client::leet_remote_rpc()
+
     Response::new()
         .body(TesterResponse::Run(Ok(())))
         .send()
