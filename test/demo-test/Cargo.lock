@@ -1084,6 +1084,7 @@ dependencies = [
  "anyhow",
  "bincode",
  "caller-utils",
+ "hyperware_app_common",
  "hyperware_process_lib",
  "process_macros",
  "rand",
