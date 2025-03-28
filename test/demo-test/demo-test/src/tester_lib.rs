@@ -1,5 +1,7 @@
 #[allow(unused_imports)]
 use crate::hyperware::process::tester::{FailResponse, Response as TesterResponse};
+use hyperware_process_lib::{Address, Response};
+use hyperware_app_common::SendResult;
 
 #[macro_export]
 macro_rules! fail {
@@ -154,4 +156,40 @@ macro_rules! async_test_suite {
             }
         }
     };
+}
+
+/// Helper function to test remote RPC calls
+/// 
+/// This function handles:
+/// 1. Checking if the call was successful
+/// 2. Validating the returned value against an expected value
+/// 3. Handling error cases with appropriate failure messages
+pub async fn test_remote_call<T, F>(
+    call_future: F,
+    expected_value: T,
+    error_msg: &str,
+) -> anyhow::Result<()>
+where
+    T: std::cmp::PartialEq + std::fmt::Debug,
+    F: std::future::Future<Output = SendResult<T>>,
+{
+    let result = call_future.await;
+    
+    match result {
+        SendResult::Success(actual) => {
+            if actual != expected_value {
+                fail!(format!("{}: expected {:?}, got {:?}", error_msg, expected_value, actual));
+            }
+        }
+        _ => {
+            fail!(match result {
+                SendResult::Timeout => "timeout",
+                SendResult::Offline => "offline",
+                SendResult::DeserializationError(_) => "deserialization error",
+                _ => "unknown error",
+            });
+        }
+    }
+    
+    Ok(())
 }

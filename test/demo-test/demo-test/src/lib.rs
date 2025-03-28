@@ -16,39 +16,20 @@ async_test_suite!(
 
     test_function_call: async {
         let address: Address = ("client.os", "client", "app-framework-demo", "uncentered.os").into();
-        let result = caller_utils::client::leet_remote_rpc(&address, 1337).await;
-
-        if let SendResult::Success(letsgoooo) = result {
-            if letsgoooo != 1337 * 1337 {
-                fail!("wrong result");
-            }
-        } else {
-            fail!(match result {
-                SendResult::Timeout => "timeout",
-                SendResult::Offline => "offline",
-                SendResult::DeserializationError(_) => "deserialization error",
-                _ => unreachable!(),
-            });
-        }
-        Ok(())
+        test_remote_call(
+            caller_utils::client::leet_remote_rpc(&address, 1337),
+            1337 * 1337,
+            "wrong leet_remote_rpc result"
+        ).await
     },
 
     test_just_leet: async {
         let address: Address = ("client.os", "client", "app-framework-demo", "uncentered.os").into();
-        let result = caller_utils::client::just_leet_remote_rpc(&address).await;
-        if let SendResult::Success(letsgoooo) = result {
-            if letsgoooo != 1337 {
-                fail!("wrong result");
-            }
-        } else {
-            fail!(match result {
-                SendResult::Timeout => "timeout",
-                SendResult::Offline => "offline",
-                SendResult::DeserializationError(_) => "deserialization error",
-                _ => unreachable!(),
-            });
-        }
-        Ok(())
+        test_remote_call(
+            caller_utils::client::just_leet_remote_rpc(&address),
+            1337,
+            "wrong just_leet_remote_rpc result"
+        ).await
     },
 
     // Add more tests here as needed
