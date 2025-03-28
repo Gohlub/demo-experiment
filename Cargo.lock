@@ -1116,6 +1116,25 @@ dependencies = [
 ]
 
 [[package]]
+name = "demo-test"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "bincode",
+ "caller-utils",
+ "hyperware_app_common",
+ "hyperware_process_lib",
+ "process_macros",
+ "rand 0.8.5",
+ "rmp-serde",
+ "serde",
+ "serde_json",
+ "thiserror 1.0.69",
+ "url",
+ "wit-bindgen 0.36.0",
+]
+
+[[package]]
 name = "der"
 version = "0.7.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1689,7 +1708,7 @@ dependencies = [
 [[package]]
 name = "hyperprocess_macro"
 version = "0.1.0"
-source = "git+https://github.com/hyperware-ai/hyperprocess-macro#cfe482b6061205561314962c53ed1f4cb8d264f6"
+source = "git+https://github.com/hyperware-ai/hyperprocess-macro#dd70bcf5c96c82fd0c2eeb5949934b792608e325"
 dependencies = [
  "anyhow",
  "futures-util",
@@ -1712,7 +1731,7 @@ dependencies = [
 [[package]]
 name = "hyperware_app_common"
 version = "0.1.0"
-source = "git+https://github.com/hyperware-ai/hyperprocess-macro#cfe482b6061205561314962c53ed1f4cb8d264f6"
+source = "git+https://github.com/hyperware-ai/hyperprocess-macro#dd70bcf5c96c82fd0c2eeb5949934b792608e325"
 dependencies = [
  "anyhow",
  "futures-util",

@@ -21,14 +21,14 @@ pub mod client {
     use crate::*;
 
     /// Generated stub for `leet` remote RPC call
-    pub async fn leet_remote_rpc(target: &Address) -> SendResult<u32> {
-        let request = json!({"Leet" : {}});
+    pub async fn leet_remote_rpc(target: &Address, test: u32) -> SendResult<u32> {
+        let request = json!({"Leet": test});
         send::<u32>(&request, target, 30).await
     }
     
     /// Generated stub for `leet` local RPC call
-    pub async fn leet_local_rpc(target: &Address) -> SendResult<u32> {
-        let request = json!({"Leet" : {}});
+    pub async fn leet_local_rpc(target: &Address, test: u32) -> SendResult<u32> {
+        let request = json!({"Leet": test});
         send::<u32>(&request, target, 30).await
     }
     

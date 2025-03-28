@@ -39,7 +39,6 @@ macro_rules! async_test_suite {
             additional_derives: [PartialEq, serde::Deserialize, serde::Serialize, process_macros::SerdeJsonInto],
         });
 
-        // Import only what we need within the macro scope without conflicting with outer imports
         use hyperware_process_lib::{
             await_message, call_init, print_to_terminal, Address, Response
         };
@@ -53,8 +52,15 @@ macro_rules! async_test_suite {
         async fn run_all_tests() -> anyhow::Result<()> {
             $(
                 print_to_terminal(0, concat!("Running test: ", stringify!($test_name)));
-                $test_name().await?;
-                print_to_terminal(0, concat!("Test passed: ", stringify!($test_name)));
+                match $test_name().await {
+                    Ok(()) => {
+                        print_to_terminal(0, concat!("Test passed: ", stringify!($test_name)));
+                    },
+                    Err(e) => {
+                        print_to_terminal(0, &format!("Test failed: {} - {:?}", stringify!($test_name), e));
+                        return Err(e);
+                    }
+                }
             )*
             
             print_to_terminal(0, "All tests passed!");
@@ -65,8 +71,8 @@ macro_rules! async_test_suite {
         fn init(_our: Address) {
             print_to_terminal(0, "Starting test suite...");
             
-            // Flag to track if tests have started
-            let mut tests_started = false;
+            // Flag to track if tests have been triggered and started
+            let mut tests_triggered = false;
             
             // Main event loop
             loop {
@@ -75,42 +81,74 @@ macro_rules! async_test_suite {
                     ctx.borrow_mut().executor.poll_all_tasks();
                 });
                 
-                if !tests_started {
-                    // Wait for the first message to start tests
-                    match await_message() {
-                        Ok(_) => {
-                            tests_started = true;
-                            print_to_terminal(0, "Running tests...");
-                            
-                            // Start the test suite with the hyper! macro
-                            hyperware_app_common::hyper! {
-                                match run_all_tests().await {
-                                    Ok(()) => {
-                                        // All tests passed - send success response
-                                        Response::new()
-                                            .body(TesterResponse::Run(Ok(())))
-                                            .send()
-                                            .unwrap();
-                                    },
-                                    Err(e) => {
-                                        // Test failed - report failure
-                                        print_to_terminal(0, format!("Test suite failed: {:?}", e).as_str());
-                                        crate::fail!("test_suite");
+                // First, process any messages to handle RPC responses
+                match await_message() {
+                    Ok(message) => {
+                        match message {
+                            hyperware_process_lib::Message::Response {body, context, ..} => {
+                                // Handle responses to unblock waiting futures
+                                let correlation_id = context
+                                    .as_deref()
+                                    .map(|bytes| String::from_utf8_lossy(bytes).to_string())
+                                    .unwrap_or_else(|| "no context".to_string());
+                                
+                                print_to_terminal(0, &format!("Received response with ID: {}", correlation_id));
+                                
+                                hyperware_app_common::RESPONSE_REGISTRY.with(|registry| {
+                                    let mut registry_mut = registry.borrow_mut();
+                                    registry_mut.insert(correlation_id, body);
+                                });
+                            },
+                            hyperware_process_lib::Message::Request { .. } => {
+                                // The first request triggers test execution
+                                if !tests_triggered {
+                                    tests_triggered = true;
+                                    print_to_terminal(0, "Received initial request, starting tests...");
+                                    
+                                    // Start the test suite
+                                    hyperware_app_common::hyper! {
+                                        match run_all_tests().await {
+                                            Ok(()) => {
+                                                // All tests passed - send success response
+                                                print_to_terminal(0, "Tests completed successfully!");
+                                                Response::new()
+                                                    .body(TesterResponse::Run(Ok(())))
+                                                    .send()
+                                                    .unwrap_or_else(|e| {
+                                                        print_to_terminal(0, &format!("Failed to send success response: {:?}", e));
+                                                    });
+                                            },
+                                            Err(e) => {
+                                                // Tests failed - send failure response
+                                                print_to_terminal(0, &format!("Test suite failed: {:?}", e));
+                                                crate::fail!(&format!("Test failure: {:?}", e));
+                                            }
+                                        }
                                     }
                                 }
+                                // No response here - response is sent when tests complete
                             }
-                        },
-                        Err(e) => {
-                            print_to_terminal(0, format!("Failed to receive initial message: {:?}", e).as_str());
-                            crate::fail!("initial_message");
                         }
-                    }
-                } else {
-                    // Tests have started, just process additional messages
-                    // to keep the event loop running and allow async tasks to progress
-                    match await_message() {
-                        Ok(_) => {}, // Ignore additional messages
-                        Err(_) => {}, // Ignore errors too
+                    },
+                    Err(e) => {
+                        // Handle send errors to unblock futures that are waiting for responses
+                        if let hyperware_process_lib::SendError {
+                            kind,
+                            context: Some(context),
+                            ..
+                        } = &e
+                        {
+                            if let Ok(correlation_id) = String::from_utf8(context.to_vec()) {
+                                let error_response = serde_json::to_vec(kind).unwrap();
+                                
+                                hyperware_app_common::RESPONSE_REGISTRY.with(|registry| {
+                                    let mut registry_mut = registry.borrow_mut();
+                                    registry_mut.insert(correlation_id, error_response);
+                                });
+                            }
+                        }
+                        
+                        print_to_terminal(0, &format!("Message error: {:?}", e));
                     }
                 }
             }

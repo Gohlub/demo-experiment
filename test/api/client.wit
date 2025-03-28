@@ -12,12 +12,14 @@ interface client {
     // Function signature for: leet (remote)
     record leet-signature-remote {
         target: address,
+        test: u32,
         returning: u32
     }
 
     // Function signature for: leet (local)
     record leet-signature-local {
         target: address,
+        test: u32,
         returning: u32
     }
 }
