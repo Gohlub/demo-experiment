@@ -13,3 +13,4 @@
 - Http stubs aren't fully generated yet. Using hyperware process lib to send_request (POST) should be fairly straightforward.
 - Add support for `LazyLoadBlob` in a message body.
 - We currently use `record`s in the `wit` files to represent function signatures. It is entirely possible to change these to regular functions that return a future. Future support for implementing a wit component will only be available with WASI preview 3, but one can change the stub generation code to already accomodate this.
+- Heavy dogfooding and performance tests
