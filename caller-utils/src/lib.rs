@@ -12,6 +12,37 @@ pub use hyperware_app_common::send;
 use hyperware_process_lib::Address;
 use serde_json::json;
 
+/// Generated RPC stubs for the indexer interface
+pub mod indexer {
+    use crate::*;
+
+    /// Generated stub for `add-to-index` remote RPC call
+    pub async fn add_to_index_remote_rpc(target: &Address, index_name: String, item: String) -> SendResult<bool> {
+        let request = json!({"AddToIndex": (index_name, item)});
+        send::<bool>(&request, target, 30).await
+    }
+    
+    /// Generated stub for `remove-from-index` remote RPC call
+    pub async fn remove_from_index_remote_rpc(target: &Address, index_name: String, item: String) -> SendResult<bool> {
+        let request = json!({"RemoveFromIndex": (index_name, item)});
+        send::<bool>(&request, target, 30).await
+    }
+    
+    /// Generated stub for `get-index` remote RPC call
+    pub async fn get_index_remote_rpc(target: &Address, index_name: String) -> SendResult<Option<Vec<String>>> {
+        let request = json!({"GetIndex": index_name});
+        send::<Option<Vec<String>>>(&request, target, 30).await
+    }
+    
+    /// Generated stub for `list-indices` remote RPC call
+    pub async fn list_indices_remote_rpc(target: &Address) -> SendResult<Vec<String>> {
+        let request = json!({"ListIndices" : {}});
+        send::<Vec<String>>(&request, target, 30).await
+    }
+    
+    
+}
+
 /// Generated RPC stubs for the client interface
 pub mod client {
     use crate::*;
@@ -59,19 +90,6 @@ pub mod curator {
         send::<Option<String>>(&request, target, 30).await
     }
     
-    /// Generated stub for `temp` remote RPC call
-    pub async fn temp_remote_rpc(target: &Address) -> SendResult<f32> {
-        let request = json!({"Temp" : {}});
-        send::<f32>(&request, target, 30).await
-    }
-    
-    
-}
-
-/// Generated RPC stubs for the indexer interface
-pub mod indexer {
-    use crate::*;
-
     /// Generated stub for `temp` remote RPC call
     pub async fn temp_remote_rpc(target: &Address) -> SendResult<f32> {
         let request = json!({"Temp" : {}});

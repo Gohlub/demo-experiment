@@ -9,9 +9,32 @@ interface indexer {
 
     use standard.{address};
 
-    // Function signature for: temp (remote)
-    record temp-signature-remote {
+    // Function signature for: add-to-index (remote)
+    record add-to-index-signature-remote {
         target: address,
-        returning: f32
+        index-name: string,
+        item: string,
+        returning: bool
+    }
+
+    // Function signature for: remove-from-index (remote)
+    record remove-from-index-signature-remote {
+        target: address,
+        index-name: string,
+        item: string,
+        returning: bool
+    }
+
+    // Function signature for: get-index (remote)
+    record get-index-signature-remote {
+        target: address,
+        index-name: string,
+        returning: option<list<string>>
+    }
+
+    // Function signature for: list-indices (remote)
+    record list-indices-signature-remote {
+        target: address,
+        returning: list<string>
     }
 }
