@@ -16,20 +16,24 @@ async_test_suite!(
 
     test_function_call: async {
         let address: Address = ("client.os", "client", "app-framework-demo", "uncentered.os").into();
-        test_remote_call(
+        let result = test_remote_call(
             caller_utils::client::leet_remote_rpc(&address, 1337),
             1337 * 1337,
             "wrong leet_remote_rpc result"
-        ).await
+        ).await?;
+        print_to_terminal(0, &format!("leet_remote_rpc result: {}", result));
+        Ok(())
     },
 
     test_just_leet: async {
         let address: Address = ("client.os", "client", "app-framework-demo", "uncentered.os").into();
-        test_remote_call(
+        let result = test_remote_call(
             caller_utils::client::just_leet_remote_rpc(&address),
             1337,
             "wrong just_leet_remote_rpc result"
-        ).await
+        ).await?;
+        print_to_terminal(0, &format!("just_leet_remote_rpc result: {}", result));
+        Ok(())
     },
 
     // Add more tests here as needed

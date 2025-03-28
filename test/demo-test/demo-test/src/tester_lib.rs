@@ -164,13 +164,15 @@ macro_rules! async_test_suite {
 /// 1. Checking if the call was successful
 /// 2. Validating the returned value against an expected value
 /// 3. Handling error cases with appropriate failure messages
+/// 
+/// Returns the actual value if successful, allowing it to be used in subsequent operations
 pub async fn test_remote_call<T, F>(
     call_future: F,
     expected_value: T,
     error_msg: &str,
-) -> anyhow::Result<()>
+) -> anyhow::Result<T>
 where
-    T: std::cmp::PartialEq + std::fmt::Debug,
+    T: std::cmp::PartialEq + std::fmt::Debug + Clone,
     F: std::future::Future<Output = SendResult<T>>,
 {
     let result = call_future.await;
@@ -180,6 +182,8 @@ where
             if actual != expected_value {
                 fail!(format!("{}: expected {:?}, got {:?}", error_msg, expected_value, actual));
             }
+            // Return the actual value
+            Ok(actual)
         }
         _ => {
             fail!(match result {
@@ -190,6 +194,4 @@ where
             });
         }
     }
-    
-    Ok(())
 }
