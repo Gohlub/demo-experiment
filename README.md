@@ -14,3 +14,4 @@
 - Add support for `LazyLoadBlob` in a message body.
 - We currently use `record`s in the `wit` files to represent function signatures. It is entirely possible to change these to regular functions that return a future. Future support for implementing a wit component will only be available with WASI preview 3, but one can change the stub generation code to already accomodate this.
 - Heavy dogfooding and performance tests
+- Autogenerate function stubs from wit files in js/ts for frontend work.
