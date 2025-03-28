@@ -24,6 +24,12 @@ home = "home/client"
 fake_node_name = "client.os"
 runtime_verbosity = 2
 
+[[tests.nodes]]
+port = 8082
+home = "home/curator"
+fake_node_name = "curator.os"
+runtime_verbosity = 2
+
 
 # [[tests.nodes]]
 # port = 8082

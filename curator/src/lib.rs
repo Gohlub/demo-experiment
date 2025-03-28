@@ -1,17 +1,10 @@
 use hyperprocess_macro::hyperprocess;
-use hyperware::process::standard::ProcessId;
-use hyperware_app_common::State;
-use hyperware_process_lib::{Address, LazyLoadBlob, Request as HyperwareRequest};
-use hyperware_process_lib::{http::server::WsMessageType};
-use hyperware_app_common::send;
 use serde::{Deserialize, Serialize};
-use serde_json::{json, Value};
-use hyperware_process_lib::kiprintln;
-use hyperware::process::standard::Address as WitAddress;
+use std::collections::HashMap;
 
 #[derive(Default, Debug, Serialize, Deserialize)]
 struct CuratorState {
-
+    curations: HashMap<String, String>, // Maps title to content
 }
 
 #[hyperprocess(
@@ -33,6 +26,26 @@ struct CuratorState {
 impl CuratorState {
     #[init]
     async fn initialize(&mut self) {
+        // Initialize with empty hashmap if not already present
+        if self.curations.is_empty() {
+            self.curations = HashMap::new();
+        }
+    }
+
+    #[remote]
+    async fn add_curation(&mut self, title: String, content: String) -> bool {
+        self.curations.insert(title, content);
+        true
+    }
+
+    #[remote]
+    async fn remove_curation(&mut self, title: String) -> bool {
+        self.curations.remove(&title).is_some()
+    }
+
+    #[remote]
+    async fn get_curation(&self, title: String) -> Option<String> {
+        self.curations.get(&title).cloned()
     }
 
     #[remote]

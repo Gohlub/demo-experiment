@@ -9,6 +9,28 @@ interface curator {
 
     use standard.{address};
 
+    // Function signature for: add-curation (remote)
+    record add-curation-signature-remote {
+        target: address,
+        title: string,
+        content: string,
+        returning: bool
+    }
+
+    // Function signature for: remove-curation (remote)
+    record remove-curation-signature-remote {
+        target: address,
+        title: string,
+        returning: bool
+    }
+
+    // Function signature for: get-curation (remote)
+    record get-curation-signature-remote {
+        target: address,
+        title: string,
+        returning: option<string>
+    }
+
     // Function signature for: temp (remote)
     record temp-signature-remote {
         target: address,

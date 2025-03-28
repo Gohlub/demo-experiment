@@ -5,9 +5,15 @@
         "on_exit": "None",
         "request_networking": true,
         "request_capabilities": [
+            "client:app-framework-demo:uncentered.os",
+            "curator:app-framework-demo:uncentered.os",
+            "indexer:app-framework-demo:uncentered.os",
             "http-client:distro:sys"
         ],
         "grant_capabilities": [
+            "client:app-framework-demo:uncentered.os",
+            "curator:app-framework-demo:uncentered.os",
+            "indexer:app-framework-demo:uncentered.os",
             "http-client:distro:sys"
         ],
         "public": true
