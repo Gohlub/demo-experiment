@@ -22,4 +22,10 @@ interface client {
         test: u32,
         returning: u32
     }
+
+    // Function signature for: just-leet (remote)
+    record just-leet-signature-remote {
+        target: address,
+        returning: u32
+    }
 }

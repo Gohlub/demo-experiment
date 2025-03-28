@@ -33,6 +33,24 @@ async_test_suite!(
         Ok(())
     },
 
+    test_just_leet: async {
+        let address: Address = ("client.os", "client", "app-framework-demo", "uncentered.os").into();
+        let result = caller_utils::client::just_leet_remote_rpc(&address).await;
+        if let SendResult::Success(letsgoooo) = result {
+            if letsgoooo != 1337 {
+                fail!("wrong result");
+            }
+        } else {
+            fail!(match result {
+                SendResult::Timeout => "timeout",
+                SendResult::Offline => "offline",
+                SendResult::DeserializationError(_) => "deserialization error",
+                _ => unreachable!(),
+            });
+        }
+        Ok(())
+    },
+
     // Add more tests here as needed
 
 );

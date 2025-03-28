@@ -29,4 +29,9 @@ impl ClientState {
     async fn leet(&self, test: u32) -> u32 {
         1337 * test
     }
+
+    #[remote]
+    async fn just_leet(&self) -> u32 {
+        1337
+    }
 }
