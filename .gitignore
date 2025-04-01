@@ -10,7 +10,6 @@
 .DS_Store
 .vscode
 /.vscode
-*/pkg/*.zip
 */process_env
 */target/
 */wasi_snapshot_preview1.wasm
