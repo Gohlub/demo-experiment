@@ -12,6 +12,31 @@ pub use hyperware_app_common::send;
 use hyperware_process_lib::Address;
 use serde_json::json;
 
+/// Generated RPC stubs for the client interface
+pub mod client {
+    use crate::*;
+
+    /// Generated stub for `leet` remote RPC call
+    pub async fn leet_remote_rpc(target: &Address, test: u32) -> SendResult<u32> {
+        let request = json!({"Leet": test});
+        send::<u32>(&request, target, 30).await
+    }
+    
+    /// Generated stub for `leet` local RPC call
+    pub async fn leet_local_rpc(target: &Address, test: u32) -> SendResult<u32> {
+        let request = json!({"Leet": test});
+        send::<u32>(&request, target, 30).await
+    }
+    
+    /// Generated stub for `just-leet` remote RPC call
+    pub async fn just_leet_remote_rpc(target: &Address) -> SendResult<u32> {
+        let request = json!({"JustLeet" : {}});
+        send::<u32>(&request, target, 30).await
+    }
+    
+    
+}
+
 /// Generated RPC stubs for the curator interface
 pub mod curator {
     use crate::*;
@@ -69,31 +94,6 @@ pub mod indexer {
     pub async fn list_indices_remote_rpc(target: &Address) -> SendResult<Vec<String>> {
         let request = json!({"ListIndices" : {}});
         send::<Vec<String>>(&request, target, 30).await
-    }
-    
-    
-}
-
-/// Generated RPC stubs for the client interface
-pub mod client {
-    use crate::*;
-
-    /// Generated stub for `leet` remote RPC call
-    pub async fn leet_remote_rpc(target: &Address, test: u32) -> SendResult<u32> {
-        let request = json!({"Leet": test});
-        send::<u32>(&request, target, 30).await
-    }
-    
-    /// Generated stub for `leet` local RPC call
-    pub async fn leet_local_rpc(target: &Address, test: u32) -> SendResult<u32> {
-        let request = json!({"Leet": test});
-        send::<u32>(&request, target, 30).await
-    }
-    
-    /// Generated stub for `just-leet` remote RPC call
-    pub async fn just_leet_remote_rpc(target: &Address) -> SendResult<u32> {
-        let request = json!({"JustLeet" : {}});
-        send::<u32>(&request, target, 30).await
     }
     
     
