@@ -28,4 +28,3 @@ test-headless/results/*
 **/*.wasm
 .env
 **/*.timestamp-*.mjs
-pods/ui/tsconfig.*.tsbuildinfo
