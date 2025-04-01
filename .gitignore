@@ -11,7 +11,6 @@
 .vscode
 /.vscode
 */pkg/*.zip
-*/pkg/ui
 */process_env
 */target/
 */wasi_snapshot_preview1.wasm
@@ -21,14 +20,7 @@ home/
 node_modules/
 package-lock.json
 pkg/*.wasm
-pkg/pod-ui/
-pkg/ui/assets/
-pkg/ui/dist
-pkg/ui/index.html
-pods/ui/*.tsbuildinfo
 /target
-ui/public/extension
-ui/public/extension.zip
 yarn.lock
 test/results/*
 test-interactive/results/*
