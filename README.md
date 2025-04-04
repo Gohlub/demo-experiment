@@ -8,6 +8,6 @@ In `/resources`, amongst others, there are two folders, `/app-framework-guide.md
 On the topic of others, I just included things that might be might be useful, such as contact management, kit, and the use of hyper-bindgen. In the initial prompt, I usually emphasize this folder as a reference and explicitly reference hyper-bindgen to make sure the LLM client makes use of it.
 
 
-The `load-balancer-example` branch includes a WIP for a load-balancer implementation (through Claude Code). I encountered an issue with imports and hyper-bindgen that I escalated with Luc, so it doesn't compile yet.
+The `load-balancer-example` branch includes a WIP for a load-balancer implementation (through Claude Code). I encountered an issue with imports and hyper-bindgen that I escalated with Luc, so it doesn't compile yet. There, I used `app-framework-guide.md` as since I am not sure whether the LLM-generated one is good.
 
 
