@@ -1,0 +1,39 @@
+[package]
+name = "load-balancer"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[package.metadata.component]
+package = "hyperware:process"
+
+
+[dependencies.hyperprocess_macro]
+git = "https://github.com/hyperware-ai/hyperprocess-macro"
+
+[dependencies.hyperware_app_common]
+git = "https://github.com/hyperware-ai/hyperprocess-macro"
+
+[dependencies.hyperware_process_lib]
+features = ["logging"]
+version = "1.0.4"
+
+
+
+[dependencies]
+anyhow = "1.0"
+
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+thiserror = "1.0"
+uuid = { version = "1.0", features = ["v4", "serde"] }
+async-trait = "0.1"
+futures = "0.3"
+rand = "0.8"
+humantime = "2.1"
+lazy_static = "1.4"
+
+[dependencies.caller-utils]
+path = "../caller-utils"

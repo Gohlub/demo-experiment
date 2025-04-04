@@ -1,6 +1,7 @@
 world test-app-framework-demo-uncentered-dot-os-v0 {
     import tester;
     import curator;
+    import load-balancer;
     import client;
     import indexer;
     include process-v1;

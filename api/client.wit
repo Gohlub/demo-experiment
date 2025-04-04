@@ -9,6 +9,71 @@ interface client {
 
     use standard.{address};
 
+    record index-result {
+        success: bool,
+        result: option<t>,
+        error: option<string>
+    }
+
+    record client-stats {
+        total-requests: u64,
+        successful-requests: u64,
+        failed-requests: u64,
+        using-load-balancer: bool
+    }
+
+    // Function signature for: set-load-balancer (remote)
+    record set-load-balancer-signature-remote {
+        target: address,
+        lb-address: string,
+        returning: bool
+    }
+
+    // Function signature for: set-load-balancer (local)
+    record set-load-balancer-signature-local {
+        target: address,
+        lb-address: string,
+        returning: bool
+    }
+
+    // Function signature for: set-direct-indexer (remote)
+    record set-direct-indexer-signature-remote {
+        target: address,
+        indexer-address: string,
+        returning: bool
+    }
+
+    // Function signature for: set-direct-indexer (local)
+    record set-direct-indexer-signature-local {
+        target: address,
+        indexer-address: string,
+        returning: bool
+    }
+
+    // Function signature for: toggle-load-balancer-usage (remote)
+    record toggle-load-balancer-usage-signature-remote {
+        target: address,
+        returning: bool
+    }
+
+    // Function signature for: toggle-load-balancer-usage (local)
+    record toggle-load-balancer-usage-signature-local {
+        target: address,
+        returning: bool
+    }
+
+    // Function signature for: get-stats (remote)
+    record get-stats-signature-remote {
+        target: address,
+        returning: client-stats
+    }
+
+    // Function signature for: get-stats (local)
+    record get-stats-signature-local {
+        target: address,
+        returning: client-stats
+    }
+
     // Function signature for: leet (remote)
     record leet-signature-remote {
         target: address,
@@ -27,5 +92,63 @@ interface client {
     record just-leet-signature-remote {
         target: address,
         returning: u32
+    }
+
+    // Function signature for: lb-add-to-index (remote)
+    record lb-add-to-index-signature-remote {
+        target: address,
+        index-name: string,
+        item: string,
+        returning: index-result
+    }
+
+    // Function signature for: lb-add-to-index (local)
+    record lb-add-to-index-signature-local {
+        target: address,
+        index-name: string,
+        item: string,
+        returning: index-result
+    }
+
+    // Function signature for: lb-remove-from-index (remote)
+    record lb-remove-from-index-signature-remote {
+        target: address,
+        index-name: string,
+        item: string,
+        returning: index-result
+    }
+
+    // Function signature for: lb-remove-from-index (local)
+    record lb-remove-from-index-signature-local {
+        target: address,
+        index-name: string,
+        item: string,
+        returning: index-result
+    }
+
+    // Function signature for: lb-get-index (remote)
+    record lb-get-index-signature-remote {
+        target: address,
+        index-name: string,
+        returning: index-result
+    }
+
+    // Function signature for: lb-get-index (local)
+    record lb-get-index-signature-local {
+        target: address,
+        index-name: string,
+        returning: index-result
+    }
+
+    // Function signature for: lb-list-indices (remote)
+    record lb-list-indices-signature-remote {
+        target: address,
+        returning: index-result
+    }
+
+    // Function signature for: lb-list-indices (local)
+    record lb-list-indices-signature-local {
+        target: address,
+        returning: index-result
     }
 }

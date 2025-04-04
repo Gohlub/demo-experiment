@@ -8,6 +8,7 @@ members = [
     "client",
     "curator",
     "indexer",
+    "load-balancer",
     "caller-utils",
     "test/demo-test/demo-test"
 ]

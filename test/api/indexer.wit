@@ -9,6 +9,39 @@ interface indexer {
 
     use standard.{address};
 
+    record indexer-load-info {
+        request-count: u64,
+        index-count: u32,
+        total-items: u32,
+        max-capacity: u32
+    }
+
+    // Function signature for: set-load-balancer (remote)
+    record set-load-balancer-signature-remote {
+        target: address,
+        lb-address: string,
+        returning: bool
+    }
+
+    // Function signature for: set-load-balancer (local)
+    record set-load-balancer-signature-local {
+        target: address,
+        lb-address: string,
+        returning: bool
+    }
+
+    // Function signature for: get-load-info (remote)
+    record get-load-info-signature-remote {
+        target: address,
+        returning: indexer-load-info
+    }
+
+    // Function signature for: get-load-info (local)
+    record get-load-info-signature-local {
+        target: address,
+        returning: indexer-load-info
+    }
+
     // Function signature for: add-to-index (remote)
     record add-to-index-signature-remote {
         target: address,

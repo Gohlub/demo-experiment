@@ -1,0 +1,115 @@
+interface load-balancer {
+    // This interface contains function signature definitions that will be used
+    // by the hyper-bindgen macro to generate async function bindings.
+    //
+    // NOTE: This is currently a hacky workaround since WIT async functions are not
+    // available until WASI Preview 3. Once Preview 3 is integrated into Hyperware,
+    // we should switch to using proper async WIT function signatures instead of
+    // this struct-based approach with hyper-bindgen generating the async stubs.
+
+    use standard.{address};
+
+    record load-balancer-status {
+        healthy-indexers: u32,
+        total-indexers: u32,
+        total-requests: u64,
+        uptime-seconds: u64,
+        indexer-stats: list<indexer-stat>
+    }
+
+    record indexer-stat {
+        address: string,
+        current-load: u32,
+        capacity: u32,
+        health-status: bool,
+        load-percentage: u32
+    }
+
+    // Function signature for: register-indexer (remote)
+    record register-indexer-signature-remote {
+        target: address,
+        indexer-address: string,
+        capacity: u32,
+        returning: bool
+    }
+
+    // Function signature for: register-indexer (local)
+    record register-indexer-signature-local {
+        target: address,
+        indexer-address: string,
+        capacity: u32,
+        returning: bool
+    }
+
+    // Function signature for: unregister-indexer (remote)
+    record unregister-indexer-signature-remote {
+        target: address,
+        indexer-address: string,
+        returning: bool
+    }
+
+    // Function signature for: unregister-indexer (local)
+    record unregister-indexer-signature-local {
+        target: address,
+        indexer-address: string,
+        returning: bool
+    }
+
+    // Function signature for: report-load (remote)
+    record report-load-signature-remote {
+        target: address,
+        indexer-address: string,
+        current-load: u32,
+        returning: bool
+    }
+
+    // Function signature for: report-load (local)
+    record report-load-signature-local {
+        target: address,
+        indexer-address: string,
+        current-load: u32,
+        returning: bool
+    }
+
+    // Function signature for: get-available-indexer (remote)
+    record get-available-indexer-signature-remote {
+        target: address,
+        returning: option<string>
+    }
+
+    // Function signature for: get-available-indexer (local)
+    record get-available-indexer-signature-local {
+        target: address,
+        returning: option<string>
+    }
+
+    // Function signature for: health-check (remote)
+    record health-check-signature-remote {
+        target: address,
+        returning: bool
+    }
+
+    // Function signature for: health-check (local)
+    record health-check-signature-local {
+        target: address,
+        returning: bool
+    }
+
+    // Function signature for: get-stats (remote)
+    record get-stats-signature-remote {
+        target: address,
+        returning: list<tuple<string, u32>>
+    }
+
+    // Function signature for: get-stats (local)
+    record get-stats-signature-local {
+        target: address,
+        returning: list<tuple<string, u32>>
+    }
+
+    // Function signature for: get-status (http)
+    record get-status-signature-http {
+        target: string,
+        returning: load-balancer-status
+    }
+}
