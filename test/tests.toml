@@ -30,6 +30,12 @@ home = "home/curator"
 fake_node_name = "curator.os"
 runtime_verbosity = 2
 
+[[tests.nodes]]
+port = 8083
+home = "home/load-balancer"
+fake_node_name = "load-balancer.os"
+runtime_verbosity = 2
+
 
 # [[tests.nodes]]
 # port = 8082

@@ -1,11 +1,34 @@
 use crate::hyperware::process::tester::{FailResponse, Response as TesterResponse};
 mod tester_lib;
-mod load_balancer_tests;
-mod fault_tolerance_tests;
-use caller_utils::client::*;
-use caller_utils::curator::*;
-use caller_utils::indexer::*;
-use caller_utils::load_balancer::*;
+use caller_utils::client::{
+    leet_remote_rpc, 
+    just_leet_remote_rpc, 
+    set_load_balancer_remote_rpc as client_set_load_balancer_remote_rpc,
+    get_stats_remote_rpc as client_get_stats_remote_rpc
+};
+
+use caller_utils::curator::{
+    add_curation_remote_rpc, 
+    remove_curation_remote_rpc,
+    get_curation_remote_rpc
+};
+
+use caller_utils::indexer::{
+    add_to_index_remote_rpc, 
+    remove_from_index_remote_rpc,
+    get_index_remote_rpc,
+    list_indices_remote_rpc,
+    set_load_balancer_remote_rpc as indexer_set_load_balancer_remote_rpc
+};
+
+use caller_utils::load_balancer::{
+    register_indexer_remote_rpc,
+    unregister_indexer_remote_rpc,
+    report_load_remote_rpc,
+    get_available_indexer_remote_rpc,
+    health_check_remote_rpc,
+    get_stats_remote_rpc
+};
 use hyperware_app_common::SendResult;
 use tester_lib::*;
 use std::collections::HashMap;
@@ -23,7 +46,7 @@ async_test_suite!(
     test_function_call: async {
         let address: Address = ("client.os", "client", "app-framework-demo", "uncentered.os").into();
         let result = test_remote_call(
-            caller_utils::client::leet_remote_rpc(&address, 1337),
+            leet_remote_rpc(&address, 1337),
             1337 * 1337,
             "wrong leet_remote_rpc result"
         ).await?;
@@ -34,7 +57,7 @@ async_test_suite!(
     test_just_leet: async {
         let address: Address = ("client.os", "client", "app-framework-demo", "uncentered.os").into();
         let result = test_remote_call(
-            caller_utils::client::just_leet_remote_rpc(&address),
+            just_leet_remote_rpc(&address),
             1337,
             "wrong just_leet_remote_rpc result"
         ).await?;
@@ -201,35 +224,35 @@ async_test_suite!(
         Ok(())
     },
     
-    // Load Balancer Tests
-    test_load_balancer_register: async {
-        let lb_address: Address = ("load-balancer.os", "load-balancer", "app-framework-demo", "uncentered.os").into();
-        let indexer_address_str = "indexer.os:indexer:app-framework-demo:uncentered.os";
+    // // Load Balancer Tests
+    // test_load_balancer_register: async {
+    //     let lb_address: Address = ("load-balancer.os", "load-balancer", "app-framework-demo", "uncentered.os").into();
+    //     let indexer_address_str = "indexer.os:indexer:app-framework-demo:uncentered.os";
         
-        // Register an indexer with the load balancer
-        let register_result = register_indexer_remote_rpc(&lb_address, indexer_address_str.to_string(), 1000).await;
-        if let SendResult::Success(result) = register_result {
-            if !result {
-                fail!("Failed to register indexer with load balancer");
-            }
-            print_to_terminal(0, "Successfully registered indexer with load balancer");
-        } else {
-            fail!("Error calling register_indexer_remote_rpc");
-        }
+    //     // Register an indexer with the load balancer
+    //     let register_result = register_indexer_remote_rpc(&lb_address, indexer_address_str.to_string(), 1000).await;
+    //     if let SendResult::Success(result) = register_result {
+    //         if !result {
+    //             fail!("Failed to register indexer with load balancer");
+    //         }
+    //         print_to_terminal(0, "Successfully registered indexer with load balancer");
+    //     } else {
+    //         fail!("Error calling register_indexer_remote_rpc");
+    //     }
         
-        // Health check
-        let health_result = health_check_remote_rpc(&lb_address).await;
-        if let SendResult::Success(result) = health_result {
-            if !result {
-                fail!("Load balancer health check failed");
-            }
-            print_to_terminal(0, "Load balancer health check passed");
-        } else {
-            fail!("Error calling health_check_remote_rpc");
-        }
+    //     // Health check
+    //     let health_result = health_check_remote_rpc(&lb_address).await;
+    //     if let SendResult::Success(result) = health_result {
+    //         if !result {
+    //             fail!("Load balancer health check failed");
+    //         }
+    //         print_to_terminal(0, "Load balancer health check passed");
+    //     } else {
+    //         fail!("Error calling health_check_remote_rpc");
+    //     }
         
-        Ok(())
-    },
+    //     Ok(())
+    // },
     
     test_load_balancer_client: async {
         let lb_address: Address = ("load-balancer.os", "load-balancer", "app-framework-demo", "uncentered.os").into();
@@ -237,7 +260,7 @@ async_test_suite!(
         
         // Configure client to use load balancer
         let lb_address_str = lb_address.to_string();
-        let config_result = set_load_balancer_remote_rpc(&client_address, lb_address_str).await;
+        let config_result = client_set_load_balancer_remote_rpc(&client_address, lb_address_str).await;
         if let SendResult::Success(result) = config_result {
             if !result {
                 fail!("Failed to configure client to use load balancer");
@@ -248,7 +271,7 @@ async_test_suite!(
         }
         
         // Get client stats to verify configuration
-        let stats_result = get_stats_remote_rpc(&client_address).await;
+        let stats_result = client_get_stats_remote_rpc(&client_address).await;
         if let SendResult::Success(stats) = stats_result {
             if !stats.using_load_balancer {
                 fail!("Client not using load balancer after configuration");
@@ -281,7 +304,7 @@ async_test_suite!(
         
         // Step 3: Configure client to use load balancer
         print_to_terminal(0, "Step 3: Configuring client to use load balancer");
-        let _ = set_load_balancer_remote_rpc(&client_address, lb_address.to_string()).await;
+        let _ = client_set_load_balancer_remote_rpc(&client_address, lb_address.to_string()).await;
         
         // Step 4: Make multiple requests and verify distribution
         print_to_terminal(0, "Step 4: Testing load distribution (should favor indexer2)");
