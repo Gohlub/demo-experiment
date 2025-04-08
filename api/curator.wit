@@ -9,6 +9,10 @@ interface curator {
 
     use standard.{address};
 
+    record curator-state {
+        curations: list<tuple<string, string>>
+    }
+
     // Function signature for: add-curation (remote)
     record add-curation-signature-remote {
         target: address,

@@ -9,10 +9,13 @@ interface client {
 
     use standard.{address};
 
-    record index-result {
-        success: bool,
-        result: option<t>,
-        error: option<string>
+    record client-state {
+        load-balancer-address: option<string>,
+        direct-indexer-address: option<string>,
+        use-load-balancer: bool,
+        request-count: u64,
+        success-count: u64,
+        failure-count: u64
     }
 
     record client-stats {
@@ -20,6 +23,12 @@ interface client {
         successful-requests: u64,
         failed-requests: u64,
         using-load-balancer: bool
+    }
+
+    record index-result {
+        success: bool,
+        result-value: option<list<string>>,
+        error: option<string>
     }
 
     // Function signature for: set-load-balancer (remote)

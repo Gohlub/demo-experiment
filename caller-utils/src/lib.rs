@@ -12,17 +12,97 @@ pub use hyperware_app_common::send;
 use hyperware_process_lib::Address;
 use serde_json::json;
 
-// Import specific types from each interface
-pub use crate::wit_custom::LoadBalancerStatus;
-pub use crate::wit_custom::IndexerStat;
-pub use crate::wit_custom::IndexResult;
-pub use crate::wit_custom::ClientStats;
-pub use crate::wit_custom::IndexerLoadInfo;
-pub use crate::wit_custom::LoadBalancerStatus;
-pub use crate::wit_custom::IndexerStat;
-pub use crate::wit_custom::IndexResult;
-pub use crate::wit_custom::ClientStats;
-pub use crate::wit_custom::IndexerLoadInfo;
+// Import types from each interface
+pub use crate::hyperware::process::curator::*;
+pub use crate::hyperware::process::load_balancer::*;
+pub use crate::hyperware::process::client::*;
+pub use crate::hyperware::process::indexer::*;
+
+/// Generated RPC stubs for the indexer interface
+pub mod indexer {
+    use crate::*;
+
+    /// Generated stub for `set-load-balancer` remote RPC call
+    pub async fn set_load_balancer_remote_rpc(target: &Address, lb_address: String) -> SendResult<bool> {
+        let request = json!({"SetLoadBalancer": lb_address});
+        send::<bool>(&request, target, 30).await
+    }
+    
+    /// Generated stub for `set-load-balancer` local RPC call
+    pub async fn set_load_balancer_local_rpc(target: &Address, lb_address: String) -> SendResult<bool> {
+        let request = json!({"SetLoadBalancer": lb_address});
+        send::<bool>(&request, target, 30).await
+    }
+    
+    /// Generated stub for `get-load-info` remote RPC call
+    pub async fn get_load_info_remote_rpc(target: &Address) -> SendResult<IndexerLoadInfo> {
+        let request = json!({"GetLoadInfo" : {}});
+        send::<IndexerLoadInfo>(&request, target, 30).await
+    }
+    
+    /// Generated stub for `get-load-info` local RPC call
+    pub async fn get_load_info_local_rpc(target: &Address) -> SendResult<IndexerLoadInfo> {
+        let request = json!({"GetLoadInfo" : {}});
+        send::<IndexerLoadInfo>(&request, target, 30).await
+    }
+    
+    /// Generated stub for `add-to-index` remote RPC call
+    pub async fn add_to_index_remote_rpc(target: &Address, index_name: String, item: String) -> SendResult<bool> {
+        let request = json!({"AddToIndex": (index_name, item)});
+        send::<bool>(&request, target, 30).await
+    }
+    
+    /// Generated stub for `remove-from-index` remote RPC call
+    pub async fn remove_from_index_remote_rpc(target: &Address, index_name: String, item: String) -> SendResult<bool> {
+        let request = json!({"RemoveFromIndex": (index_name, item)});
+        send::<bool>(&request, target, 30).await
+    }
+    
+    /// Generated stub for `get-index` remote RPC call
+    pub async fn get_index_remote_rpc(target: &Address, index_name: String) -> SendResult<Option<Vec<String>>> {
+        let request = json!({"GetIndex": index_name});
+        send::<Option<Vec<String>>>(&request, target, 30).await
+    }
+    
+    /// Generated stub for `list-indices` remote RPC call
+    pub async fn list_indices_remote_rpc(target: &Address) -> SendResult<Vec<String>> {
+        let request = json!({"ListIndices" : {}});
+        send::<Vec<String>>(&request, target, 30).await
+    }
+    
+    
+}
+
+/// Generated RPC stubs for the curator interface
+pub mod curator {
+    use crate::*;
+
+    /// Generated stub for `add-curation` remote RPC call
+    pub async fn add_curation_remote_rpc(target: &Address, title: String, content: String) -> SendResult<bool> {
+        let request = json!({"AddCuration": (title, content)});
+        send::<bool>(&request, target, 30).await
+    }
+    
+    /// Generated stub for `remove-curation` remote RPC call
+    pub async fn remove_curation_remote_rpc(target: &Address, title: String) -> SendResult<bool> {
+        let request = json!({"RemoveCuration": title});
+        send::<bool>(&request, target, 30).await
+    }
+    
+    /// Generated stub for `get-curation` remote RPC call
+    pub async fn get_curation_remote_rpc(target: &Address, title: String) -> SendResult<Option<String>> {
+        let request = json!({"GetCuration": title});
+        send::<Option<String>>(&request, target, 30).await
+    }
+    
+    /// Generated stub for `temp` remote RPC call
+    pub async fn temp_remote_rpc(target: &Address) -> SendResult<f32> {
+        let request = json!({"Temp" : {}});
+        send::<f32>(&request, target, 30).await
+    }
+    
+    
+}
 
 /// Generated RPC stubs for the client interface
 pub mod client {
@@ -219,98 +299,6 @@ pub mod load_balancer {
     pub async fn get_stats_local_rpc(target: &Address) -> SendResult<Vec<(String, u32)>> {
         let request = json!({"GetStats" : {}});
         send::<Vec<(String, u32)>>(&request, target, 30).await
-    }
-    
-    /// Generated stub for `get-status` http RPC call
-    pub async fn get_status_http_rpc(_target: &str) -> SendResult<LoadBalancerStatus> {
-        // TODO: Implement HTTP endpoint
-        SendResult::Success(LoadBalancerStatus::default())
-    }
-    
-    
-}
-
-/// Generated RPC stubs for the indexer interface
-pub mod indexer {
-    use crate::*;
-
-    /// Generated stub for `set-load-balancer` remote RPC call
-    pub async fn set_load_balancer_remote_rpc(target: &Address, lb_address: String) -> SendResult<bool> {
-        let request = json!({"SetLoadBalancer": lb_address});
-        send::<bool>(&request, target, 30).await
-    }
-    
-    /// Generated stub for `set-load-balancer` local RPC call
-    pub async fn set_load_balancer_local_rpc(target: &Address, lb_address: String) -> SendResult<bool> {
-        let request = json!({"SetLoadBalancer": lb_address});
-        send::<bool>(&request, target, 30).await
-    }
-    
-    /// Generated stub for `get-load-info` remote RPC call
-    pub async fn get_load_info_remote_rpc(target: &Address) -> SendResult<IndexerLoadInfo> {
-        let request = json!({"GetLoadInfo" : {}});
-        send::<IndexerLoadInfo>(&request, target, 30).await
-    }
-    
-    /// Generated stub for `get-load-info` local RPC call
-    pub async fn get_load_info_local_rpc(target: &Address) -> SendResult<IndexerLoadInfo> {
-        let request = json!({"GetLoadInfo" : {}});
-        send::<IndexerLoadInfo>(&request, target, 30).await
-    }
-    
-    /// Generated stub for `add-to-index` remote RPC call
-    pub async fn add_to_index_remote_rpc(target: &Address, index_name: String, item: String) -> SendResult<bool> {
-        let request = json!({"AddToIndex": (index_name, item)});
-        send::<bool>(&request, target, 30).await
-    }
-    
-    /// Generated stub for `remove-from-index` remote RPC call
-    pub async fn remove_from_index_remote_rpc(target: &Address, index_name: String, item: String) -> SendResult<bool> {
-        let request = json!({"RemoveFromIndex": (index_name, item)});
-        send::<bool>(&request, target, 30).await
-    }
-    
-    /// Generated stub for `get-index` remote RPC call
-    pub async fn get_index_remote_rpc(target: &Address, index_name: String) -> SendResult<Option<Vec<String>>> {
-        let request = json!({"GetIndex": index_name});
-        send::<Option<Vec<String>>>(&request, target, 30).await
-    }
-    
-    /// Generated stub for `list-indices` remote RPC call
-    pub async fn list_indices_remote_rpc(target: &Address) -> SendResult<Vec<String>> {
-        let request = json!({"ListIndices" : {}});
-        send::<Vec<String>>(&request, target, 30).await
-    }
-    
-    
-}
-
-/// Generated RPC stubs for the curator interface
-pub mod curator {
-    use crate::*;
-
-    /// Generated stub for `add-curation` remote RPC call
-    pub async fn add_curation_remote_rpc(target: &Address, title: String, content: String) -> SendResult<bool> {
-        let request = json!({"AddCuration": (title, content)});
-        send::<bool>(&request, target, 30).await
-    }
-    
-    /// Generated stub for `remove-curation` remote RPC call
-    pub async fn remove_curation_remote_rpc(target: &Address, title: String) -> SendResult<bool> {
-        let request = json!({"RemoveCuration": title});
-        send::<bool>(&request, target, 30).await
-    }
-    
-    /// Generated stub for `get-curation` remote RPC call
-    pub async fn get_curation_remote_rpc(target: &Address, title: String) -> SendResult<Option<String>> {
-        let request = json!({"GetCuration": title});
-        send::<Option<String>>(&request, target, 30).await
-    }
-    
-    /// Generated stub for `temp` remote RPC call
-    pub async fn temp_remote_rpc(target: &Address) -> SendResult<f32> {
-        let request = json!({"Temp" : {}});
-        send::<f32>(&request, target, 30).await
     }
     
     

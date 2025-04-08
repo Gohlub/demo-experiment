@@ -26,6 +26,8 @@ struct LoadBalancerState {
 }
 
 // Load balancer strategies
+#[derive(Debug)]
+#[allow(dead_code)] // Allow unused variants as they may be implemented in the future
 enum DistributionStrategy {
     RoundRobin,
     LeastConnections,
@@ -82,6 +84,7 @@ impl LoadBalancerState {
     }
     
     // Check indexer health and update status
+    #[allow(dead_code)] // This method may be used in the future
     fn check_indexer_health(&mut self) {
         let now = std::time::SystemTime::now()
             .duration_since(std::time::UNIX_EPOCH)
@@ -111,8 +114,6 @@ impl LoadBalancerState {
 
 #[hyperprocess(
     name = "Load Balancer",
-    icon = "balance-scale",
-    widget = "process-widget",
     ui = Some(HttpBindingConfig::default()),
     endpoints = vec![
         Binding::Http {
@@ -265,9 +266,8 @@ impl LoadBalancerState {
         }
     }
 }
-
 // Status response for HTTP requests
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 struct LoadBalancerStatus {
     healthy_indexers: u32,
     total_indexers: u32,
@@ -276,7 +276,7 @@ struct LoadBalancerStatus {
     indexer_stats: Vec<IndexerStat>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 struct IndexerStat {
     address: String,
     current_load: u32,

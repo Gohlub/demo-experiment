@@ -34,6 +34,8 @@ futures = "0.3"
 rand = "0.8"
 humantime = "2.1"
 lazy_static = "1.4"
+wit-bindgen = "0.41.0"
+process_macros = "0.1.0"
 
 [dependencies.caller-utils]
 path = "../caller-utils"

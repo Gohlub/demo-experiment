@@ -9,12 +9,12 @@ interface load-balancer {
 
     use standard.{address};
 
-    record load-balancer-status {
-        healthy-indexers: u32,
-        total-indexers: u32,
-        total-requests: u64,
-        uptime-seconds: u64,
-        indexer-stats: list<indexer-stat>
+    record indexer-info {
+        address: string,
+        capacity: u32,
+        current-load: u32,
+        last-heartbeat: u64,
+        health-status: bool
     }
 
     record indexer-stat {
@@ -23,6 +23,28 @@ interface load-balancer {
         capacity: u32,
         health-status: bool,
         load-percentage: u32
+    }
+
+    record load-balancer-state {
+        indexers: list<tuple<string, indexer-info>>,
+        total-requests: u64,
+        requests-since-startup: u64,
+        startup-time: u64,
+        last-rebalance-time: u64
+    }
+
+    record load-balancer-status {
+        healthy-indexers: u32,
+        total-indexers: u32,
+        total-requests: u64,
+        uptime-seconds: u64,
+        indexer-stats: list<indexer-stat>
+    }
+
+    variant distribution-strategy {
+        round-robin,
+        least-connections,
+        random
     }
 
     // Function signature for: register-indexer (remote)

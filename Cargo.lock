@@ -2109,11 +2109,13 @@ dependencies = [
  "hyperware_app_common",
  "hyperware_process_lib",
  "lazy_static",
+ "process_macros",
  "rand 0.8.5",
  "serde",
  "serde_json",
  "thiserror 1.0.69",
  "uuid",
+ "wit-bindgen 0.41.0",
 ]
 
 [[package]]

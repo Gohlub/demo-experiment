@@ -16,6 +16,15 @@ interface indexer {
         max-capacity: u32
     }
 
+    record indexer-state {
+        indices: list<tuple<string, list<string>>>,
+        request-count: u64,
+        last-report-count: u64,
+        max-capacity: u32,
+        registered-with-lb: bool,
+        load-balancer-address: option<string>
+    }
+
     // Function signature for: set-load-balancer (remote)
     record set-load-balancer-signature-remote {
         target: address,
