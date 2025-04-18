@@ -1,6 +1,0 @@
-world app-framework-demo-uncentered-dot-os-v0 {
-    import curator;
-    import client;
-    import indexer;
-    include process-v1;
-}
