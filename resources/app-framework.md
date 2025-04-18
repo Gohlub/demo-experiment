@@ -42,6 +42,11 @@ This is a process framework abstracting away most of the boilerplate for develop
 
 RPC style, but for WASI.
 
+Importing stuff from hyperware_process_lib has to go through hyperware_app_common like:
+```rust 
+use hyperware_app_common::hyperware_process_lib{...}
+```
+
 So this includes:
 
 - Defining functions as endpoints (http, remote, local, ws and init)
