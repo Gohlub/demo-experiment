@@ -1,15 +1,11 @@
 # CLAUDE.md - Guide for working in this repository
 
 ## Build Commands
-- `kit b` or `kit build` - Build the Hyperware package
+- `kit b --hyperapp` or `kit build --hyperapp` - Build the Hyperware package
 - `kit bs` or `kit build-start-package` - Build and start a Hyperware package
-- `hyper-bindgen` - Run after changing any process, followed by `kit b`
 - `kit d` or `kit dev-ui` - Start web UI development server with hot reloading
 - `kit f` or `kit boot-fake-node` - Boot a fake node for development
 
-## Test Commands
-- `kit run-tests` or `kit t` - Run all Hyperware tests
-- Tests use the `async_test_suite!` macro in test files
 
 ## Code Style Guidelines
 - **Formatting**: Rust 2021 edition conventions
